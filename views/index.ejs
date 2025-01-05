@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Magazin Online</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Magazin Online</h1>
+    </header>
+    <main>
+      <div class="products">
+        <% products.forEach(function(product) { %>
+        <div class="product-card">
+          <h2><%= product.nume_produs %></h2>
+          <p class="category"><%= product.nume_categorie %></p>
+          <p class="description"><%= product.descriere %></p>
+          <p class="price">Lei <%= product.pret %></p>
+          <p class="stock">În stoc: <%= product.stoc %></p>
+          <a href="/product/<%= product.id_produs %>" class="btn"
+            >Vezi detalii</a
+          >
+        </div>
+        <% }); %>
+      </div>
+    </main>
+  </body>
+</html>

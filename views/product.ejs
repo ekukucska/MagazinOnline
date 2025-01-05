@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= product.nume_produs %> - Magazin Online</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1><%= product.nume_produs %></h1>
+    </header>
+    <main>
+      <div class="product-details">
+        <h2><%= product.nume_produs %></h2>
+        <p class="category"><%= product.nume_categorie %></p>
+        <p class="description"><%= product.descriere %></p>
+        <p class="price">Lei <%= product.pret %></p>
+        <p class="stock">În stoc: <%= product.stoc %></p>
+        <button class="btn">Adaugă în coș</button>
+        <a href="/" class="btn">Înapoi la magazin</a>
+      </div>
+    </main>
+  </body>
+</html>
