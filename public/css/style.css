@@ -69,3 +69,45 @@ main {
   color: #6c757d;
   font-size: 0.9rem;
 }
+
+.admin-section {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-form,
+.edit-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.product-row {
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+}
+
+.cart-item {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cart-total {
+  text-align: right;
+  font-size: 1.25rem;
+  margin-top: 2rem;
+}

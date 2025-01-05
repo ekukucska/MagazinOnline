@@ -1,0 +1,88 @@
+<!-- views/admin.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel - Magazin Online</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Panou Administrare</h1>
+        <nav>
+            <a href="/" class="btn">Înapoi la Magazin</a>
+            <a href="/cart" class="btn">Coșul de Cumpărături</a>
+        </nav>
+    </header>
+    <main>
+        <section class="admin-section">
+            <h2>Adaugă Produs Nou</h2>
+            <form action="/admin/product" method="POST" class="admin-form">
+                <div class="form-group">
+                    <label>Nume Produs:</label>
+                    <input type="text" name="nume_produs" required>
+                </div>
+                <div class="form-group">
+                    <label>Descriere:</label>
+                    <textarea name="descriere" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Preț:</label>
+                    <input type="number" step="0.01" name="pret" required>
+                </div>
+                <div class="form-group">
+                    <label>Stoc:</label>
+                    <input type="number" name="stoc" required>
+                </div>
+                <div class="form-group">
+                    <label>Categorie:</label>
+                    <select name="id_categorie" required>
+                        <% categories.forEach(function(category) { %>
+                            <option value="<%= category.id_categorie %>"><%= category.nume_categorie %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Adaugă Produs</button>
+            </form>
+        </section>
+
+        <section class="admin-section">
+            <h2>Produse Existente</h2>
+            <div class="products-table">
+                <% products.forEach(function(product) { %>
+                    <div class="product-row">
+                        <h3><%= product.nume_produs %></h3>
+                        <form action="/admin/product/<%= product.id_produs %>" method="POST" class="edit-form">
+                            <div class="form-group">
+                                <input type="text" name="nume_produs" value="<%= product.nume_produs %>" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="descriere" required><%= product.descriere %></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" step="0.01" name="pret" value="<%= product.pret %>" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" name="stoc" value="<%= product.stoc %>" required>
+                            </div>
+                            <div class="form-group">
+                                <select name="id_categorie" required>
+                                    <% categories.forEach(function(category) { %>
+                                        <option value="<%= category.id_categorie %>" 
+                                            <%= category.id_categorie === product.id_categorie ? 'selected' : '' %>>
+                                            <%= category.nume_categorie %>
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn">Actualizează</button>
+                        </form>
+                        <form action="/admin/product/<%= product.id_produs %>/delete" method="POST" class="delete-form">
+                            <button type="submit" class="btn btn-danger">Șterge</button>
+                        </form>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

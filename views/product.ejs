@@ -1,3 +1,4 @@
+<!-- views/product.ejs -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,7 +7,12 @@
   </head>
   <body>
     <header>
-      <h1><%= product.nume_produs %></h1>
+      <h1>Detalii Produs</h1>
+      <nav>
+        <a href="/" class="btn">Înapoi la Magazin</a>
+        <a href="/cart" class="btn">Coșul de Cumpărături</a>
+        <a href="/admin" class="btn">Panoul de administrare</a>
+      </nav>
     </header>
     <main>
       <div class="product-details">
@@ -15,9 +21,60 @@
         <p class="description"><%= product.descriere %></p>
         <p class="price">Lei <%= product.pret %></p>
         <p class="stock">În stoc: <%= product.stoc %></p>
-        <button class="btn">Adaugă în coș</button>
-        <a href="/" class="btn">Înapoi la magazin</a>
+
+        <form class="add-to-cart" action="/cart/add" method="POST">
+          <input
+            type="hidden"
+            name="productId"
+            value="<%= product.id_produs %>"
+          />
+          <div class="form-group">
+            <label for="quantity">Cantitate:</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value="1"
+              min="1"
+              max="<%= product.stoc %>"
+            />
+          </div>
+          <button type="submit" class="btn">Adaugă în coș</button>
+        </form>
       </div>
     </main>
+
+    <script>
+      document
+        .querySelector(".add-to-cart")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = {
+            productId: this.querySelector('[name="productId"]').value,
+            quantity: this.querySelector('[name="quantity"]').value,
+          };
+
+          fetch("/cart/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("Produs adăugat în coș!");
+              } else {
+                alert(data.message || "Eroare la adăugarea în coș");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Eroare la adăugarea în coș");
+            });
+        });
+    </script>
   </body>
 </html>
