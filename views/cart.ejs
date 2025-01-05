@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coș de Cumpărături - Magazin Online</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Coș de Cumpărături</h1>
+      <nav>
+        <a href="/" class="btn">Înapoi la Magazin</a>
+        <a href="/admin" class="btn">Panoul de administrare</a>
+      </nav>
+    </header>
+    <main>
+      <div class="cart-items">
+        <% if (cart.length === 0) { %>
+        <p>Coșul este gol</p>
+        <% } else { %> <% let total = 0; %> <% cart.forEach(function(item) { %>
+        <% total += item.pret * item.quantity; %>
+        <div class="cart-item">
+          <h3><%= item.nume %></h3>
+          <p>Preț: Lei <%= item.pret %></p>
+          <p>Cantitate: <%= item.quantity %></p>
+          <p>Subtotal: Lei <%= (item.pret * item.quantity).toFixed(2) %></p>
+        </div>
+        <% }); %>
+        <div class="cart-total">
+          <h3>Total: Lei <%= total.toFixed(2) %></h3>
+        </div>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>
