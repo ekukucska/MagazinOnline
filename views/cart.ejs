@@ -16,13 +16,20 @@
       <div class="cart-items">
         <% if (cart.length === 0) { %>
         <p>Coșul este gol</p>
-        <% } else { %> <% let total = 0; %> <% cart.forEach(function(item) { %>
-        <% total += item.pret * item.quantity; %>
+        <% } else { %> <% let total = 0; %> <% cart.forEach(function(item,
+        index) { %> <% total += item.pret * item.quantity; %>
         <div class="cart-item">
           <h3><%= item.nume %></h3>
           <p>Preț: Lei <%= item.pret %></p>
           <p>Cantitate: <%= item.quantity %></p>
           <p>Subtotal: Lei <%= (item.pret * item.quantity).toFixed(2) %></p>
+          <form
+            action="/cart/remove/<%= index %>"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-danger">Șterge</button>
+          </form>
         </div>
         <% }); %>
         <div class="cart-total">
