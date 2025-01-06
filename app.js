@@ -102,6 +102,14 @@ app.get("/cart", (req, res) => {
   res.render("cart", { cart: req.session.cart });
 });
 
+app.post("/cart/remove/:index", (req, res) => {
+  const index = parseInt(req.params.index);
+  if (index >= 0 && index < req.session.cart.length) {
+    req.session.cart.splice(index, 1);
+  }
+  res.redirect("/cart");
+});
+
 // Routes pentru administrare (CRUD)
 app.get("/admin", async (req, res) => {
   try {
