@@ -34,6 +34,15 @@
         <% }); %>
         <div class="cart-total">
           <h3>Total: Lei <%= total.toFixed(2) %></h3>
+          <form
+            action="/place-order"
+            method="POST"
+            style="margin-top: 20px; text-align: right"
+          >
+            <button type="submit" class="btn btn-primary">
+              Plasează Comanda
+            </button>
+          </form>
         </div>
         <% } %>
       </div>

@@ -110,6 +110,58 @@ app.post("/cart/remove/:index", (req, res) => {
   res.redirect("/cart");
 });
 
+app.post("/place-order", async (req, res) => {
+  if (!req.session.cart || req.session.cart.length === 0) {
+    return res.redirect("/cart");
+  }
+
+  try {
+    // Începem o tranzacție pentru a ne asigura că toate operațiunile sunt executate sau niciuna
+    const [orderResult] = await connection.promise().query(
+      "INSERT INTO comenzi (id_client, status_comanda) VALUES (?, ?)",
+      [1, "Plasata"] // Folosim id_client = 1 temporar, ar trebui să fie id-ul utilizatorului autentificat
+    );
+
+    const orderId = orderResult.insertId;
+
+    // Adăugăm fiecare produs din coș în detalii_comenzi
+    for (const item of req.session.cart) {
+      // Verificăm stocul disponibil
+      const [stockResult] = await connection
+        .promise()
+        .query("SELECT stoc FROM produse WHERE id_produs = ?", [item.id]);
+
+      if (stockResult[0].stoc < item.quantity) {
+        throw new Error(`Stoc insuficient pentru produsul ${item.nume}`);
+      }
+
+      // Adăugăm în detalii_comenzi
+      await connection
+        .promise()
+        .query(
+          "INSERT INTO detalii_comenzi (id_comanda, id_produs, cantitate, pret_unitar) VALUES (?, ?, ?, ?)",
+          [orderId, item.id, item.quantity, item.pret]
+        );
+
+      // Actualizăm stocul
+      await connection
+        .promise()
+        .query("UPDATE produse SET stoc = stoc - ? WHERE id_produs = ?", [
+          item.quantity,
+          item.id,
+        ]);
+    }
+
+    // Golim coșul după plasarea comenzii
+    req.session.cart = [];
+
+    res.redirect("/cart");
+  } catch (err) {
+    console.error("Error placing order:", err);
+    res.status(500).send("Eroare la plasarea comenzii: " + err.message);
+  }
+});
+
 // Routes pentru administrare (CRUD)
 app.get("/admin", async (req, res) => {
   try {
